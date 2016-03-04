@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "vue": "^1.0.16",
+    "vue-resource": "^0.7.0",
     "vue-router": "^0.7.11",
     "vue-weui": "^0.2.0",
     "vuex": "^0.4.2",

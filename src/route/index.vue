@@ -4,15 +4,10 @@
 
 <script>
   import Vue from 'vue'
-  import vuerouter from 'vue-router'
-
-  var RouterView = Vue.extend({
-    components:{
-      'router-view':vuerouter
-    }
-  })
-  Vue.component('router-view',RouterView)
-  export default RouterView
+  import RouterView from 'vue-router'
+  export default{
+    components:{RouterView}
+  }
 </script>
 
 <style>
