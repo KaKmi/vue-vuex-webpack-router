@@ -32,7 +32,7 @@ app.use(hotMiddleware)
 // serve pure static assets
 app.use('/static', express.static('./static'))
 
-app.listen(3000, '10.1.17.224', function (err) {
+app.listen(3000, 'localhost', function (err) {
   if (err) {
     console.log(err)
     return

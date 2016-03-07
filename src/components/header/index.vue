@@ -1,14 +1,19 @@
 <template>
     <div class="titlebar titlebar-normal titlebar-fixed">
-      <a class="titlebar-cate-left" href="javascript:;"><i class="fa fa-angle-left bars"></i></a>
+      <a v-show="showLeft" class="titlebar-cate-left" href="javascript:;"><i class="fa fa-angle-left bars"></i></a>
       <div class="titlebar-title"><span>{{title}}</span></div>
-      <a class="titlebar-cate-right" href="javascript:;"><i class="fa fa-bars bars"></i></a>
+      <a class="titlebar-cate-right" @click="dispatchEvent" href="javascript:;"><i class="fa fa-bars bars"></i></a>
     </div>
 </template>
 
 <script>
   export default{
-    props:['title'],
+    props:['title','showLeft'],
+    methods:{
+      dispatchEvent(){
+        this.$dispatch('show-nav')
+      }
+    }
   }
 
 </script>

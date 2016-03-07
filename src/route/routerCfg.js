@@ -10,8 +10,15 @@ const RouterConfig = function(router){
     '/': {
       name:'home',
       component:require('../pages/home.vue')
+    },
+     '/resolve':{
+       name:'resolve',
+       component:require('../pages/home.vue')
+     },
+    '/reject':{
+      name:'reject',
+      component:require('../pages/home.vue')
     }
-
   });
 
 };

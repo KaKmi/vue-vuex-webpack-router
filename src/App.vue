@@ -18,6 +18,7 @@ export default {
 
 <style>
  @import "../node_modules/weui";
+ /*@import "css/font-awesome.css";*/
  .wrapper{
    /*position: absolute;*/
    /*top: 0;*/
