@@ -4,19 +4,30 @@
 
 import {
   GET_ALL_WHITELIST,
+  GET_ALL_REQUESTLIST,
+  GET_ALL_BLACKLIST
 } from '../mutation-types'
 
 // initial state
 const state = {
-  whitelist:[]
+  wist:[],
+  blackList:[],
+  requestList:[]
 }
 
 // mutations
 const mutations = {
   [GET_ALL_WHITELIST] (state, whitelist) {
-    state.whitelist = whitelist
-  }
-}
+    state.wist = whitelist
+  },
+  [GET_ALL_REQUESTLIST] (state, requestlist) {
+    state.requestList = requestlist
+  },
+  [GET_ALL_BLACKLIST] (state, blacklist) {
+    state.blackList = blacklist
+  },
+};
+
 
 export default {
   state,

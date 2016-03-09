@@ -2,7 +2,7 @@
   <nav-Bar :show.sync="showNavBar" :is-home="isHome"></nav-Bar>
   <vueheader :title="title" @show-nav="showNav"></vueheader>
   <div class="taps-container">
-    <tabs :tabs="tabs"></tabs>
+    <tabs :tabs="tabs" @exchange-tab="exchangeTab"></tabs>
   </div>
   <div class="panel-containder">
     <panel :groups="groups"
@@ -10,27 +10,32 @@
     </panel>
     <actionsheet
       :show.sync="actionSheetShow"
-      :menus="computerMenus"
+      :menus="menus"
       :actions="actionSheetActions"
     ></actionsheet>
   </div>
 
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import vueheader from '../components/header/index.vue'
   import {Actionsheet} from 'vue-weui';
   import tabs from '../components/Tabs/index'
   import panel from '../components/panel/index'
-  import {getWhiteList} from '../vuex/action'
+  import {getWhiteList,getBlackList,getRequestList} from '../vuex/action'
   import navBar from '../components/navbar/index'
   export default {
-
     vuex: {
       actions: {
-        getWhiteList
+        getWhiteList,
+        getBlackList,
+        getRequestList,
       },
-      state: {}
+      getters: {
+        whiteList:({whitelist})=> whitelist.wist,
+        blackList:({whitelist})=> whitelist.blackList,
+        requestList:({whitelist})=> whitelist.requestList,
+      }
     },
     components: {vueheader, tabs, panel,Actionsheet,navBar},
     methods: {
@@ -39,33 +44,20 @@
       },
       showNav(){
         this.showNavBar = !this.showNavBar;
-      }
-    },
-    events: {
-      exchangeTab: function (menuID) {
+      },
+      exchangeTab(menuID){
         var that = this;
+//        Promise
+        that.menuID= menuID;
         this.tabs.forEach(function (tab) {
           tab.active = tab.id == menuID;
 
-        })
-        switch (menuID){
-          case 1:
-            that.computedList=that.shieldList;
-            that.computerMenus =that.actionSheetMenus.whitelistmenu
-                break;
-          case 2:
-            that.computedList =that.requestList;
-            that.computerMenus =that.actionSheetMenus.requestmenu
-                break;
-          case 3:
-            that.computedList =that.whiteList;
-            that.computerMenus =that.actionSheetMenus.whitelistmenu
-                break
-        }
+        });
       }
     },
     data(){
       return {
+        menuID:1,
         isHome:true,
         showNavBar:false,
         title: '概况',
@@ -96,60 +88,53 @@
         },
         actionSheetActions: {
           action1: '取消'
-        },
-        whiteList:[
-          {
-            time:'今天 -2015年12月18日星期一',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:1},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:2}]
-          },
-          {
-            time:'今天 -2015年12月18日星期二',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:3},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:4}]
-          }
-        ],
-        requestList:[
-          {
-            time:'今天 -2015年12月18日星期三',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:1},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:2}]
-          },
-          {
-            time:'今天 -2015年12月18日星期四',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:3},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:4}]
-          }
-        ],
-        shieldList:[
-          {
-            time:'今天 -2015年12月18日星期三1',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:1},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:2}]
-          },
-          {
-            time:'今天 -2015年12月18日星期四1',
-            items:[{icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:3},
-              {icon:'https://account-file.putaocdn.com/file/b3f626f09301616ea7fa2a239f171dac2e5944a9.png?x=0&y=0&w=180&h=180',ht:'Product Hunt',st:'souhu.com',id:4}]
-          }
-        ],
-        computedList:[],
-        computerMenus:{}
+        }
       }
     },
     computed:{
       groups(){
-        return this.computedList;
+        var list = [{
+          time:'今天-2015年12月18日星期一',
+          items:[]
+        }]
+        list[0].items=this.whiteList
+        switch (this.menuID){
+          case 1:
+            return []
+            break;
+          case 2:
+            return []
+            break;
+          case 3:
+            return list
+            break;
+        }
+//        var list = [{
+//          time:'今天-2015年12月18日星期一',
+//          items:[]
+//        }]
+//        list[0].items.push(this.whiteList)
+//        return list;
       },
       menus(){
-        return this.computerMenus
+        switch (this.menuID){
+          case 1:
+            return this.actionSheetMenus.whitelistmenu
+                break;
+          case 2:
+            return this.actionSheetMenus.requestmenu
+            break;
+          case 3:
+            return this.actionSheetMenus.whitelistmenu
+            break;
+        }
       }
     },
     route: {
       data(transition){
-        this.getWhiteList()
-        this.computedList= this.shieldList;
-        this.computerMenus=this.actionSheetMenus.whitelistmenu;
+        this.getWhiteList();
+        this.getBlackList();
+        this.getRequestList();
       }
     },
   }

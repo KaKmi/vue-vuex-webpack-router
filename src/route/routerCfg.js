@@ -13,7 +13,7 @@ const RouterConfig = function(router){
     },
      '/resolve':{
        name:'resolve',
-       component:require('../pages/home.vue')
+       component:require('../pages/resolve.vue')
      },
     '/reject':{
       name:'reject',

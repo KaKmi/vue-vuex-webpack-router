@@ -1,7 +1,7 @@
 <template>
   <div class="weui_navbar">
 
-    <div class="weui_navbar_item "  v-bind:class="tab.active?'weui_bar_item_on':''"  v-for="tab in tabs" @click="dispatchEvent('exchangeTab',tab.id)">
+    <div class="weui_navbar_item "  v-bind:class="tab.active?'weui_bar_item_on':''"  v-for="tab in tabs" @click="dispatchEvent('exchange-tab',tab.id)">
         {{tab.title}}
     </div>
     <!--<div class="weui_navbar_item weui_bar_item_on">-->

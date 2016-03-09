@@ -8,10 +8,10 @@
           <img class="weui_media_appmsg_thumb" :src="item.icon" alt="">
         </div>
         <div class="weui_media_bd">
-          <h4 class="weui_media_title">{{item.ht}}</h4>
-          <p class="weui_media_desc">{{item.st}}</p>
+          <h4 class="weui_media_title">{{item.name}}</h4>
+          <p class="weui_media_desc">{{item.url_address}}</p>
         </div>
-        <span class="more-control" @click="handleClick(item.id)"><i class="fa fa-ellipsis-h more-control-btn"></i></span>
+        <span class="more-control" @click="handleClick(item.address_filtering_id)"><i class="fa fa-ellipsis-h more-control-btn"></i></span>
       </a>
 
     </div>
