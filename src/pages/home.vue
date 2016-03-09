@@ -28,6 +28,7 @@
   import panel from '../components/panel/index'
   import {getWhiteList,getBlackList,getRequestList} from '../vuex/action'
   import navBar from '../components/navbar/index'
+  import _ from 'lodash'
   export default {
     vuex: {
       actions: {
@@ -82,12 +83,17 @@
         actionSheetShow: false,
         actionSheetMenus: {
           whitelistmenu: {
-            remove: '解除屏蔽',
+            remove: '移除白名单',
             del: '删除记录'
           },
+
           requestmenu: {
-            arrow: '通过请求',
+            arrow: '解除屏蔽',
             del: '删除记录'
+          },
+          blacklistmenu:{
+            remove:'解除屏蔽',
+            del:'删除记录'
           }
         },
         actionSheetActions: {
@@ -97,24 +103,85 @@
     },
     computed:{
       groups(){
+        var list = []
 
 
-        var list = [{
-          time:'今天-2015年12月18日星期一',
-          items:[]
-        }]
-        list[0].items=this.whiteList
         switch (this.menuID){
           case 1:
-            list[0].items=this.blackList;
+            if(this.blackList.length>0){
+
+              var con=_.groupBy(this.blackList, function (item) {
+                return  item.create_time
+              })
+              var keys = Object.keys(con)
+              var item ={}
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var date = new Date(parseInt(key));
+                var year = date.getFullYear();
+                var month =date.getMonth();
+                var day = date.getDate();
+
+                item.time =year+'-'+month+'-'+day;
+                item.items = con[key]
+
+              }
+
+              list.push(item)
+
+            }
+
             return list
             break;
           case 2:
-            list[0].items=this.requestList
+//            list[0].items=this.requestList
+            if(this.requestList.length>0){
+
+              var con=_.groupBy(this.requestList, function (item) {
+                return  item.create_time
+              })
+              var keys = Object.keys(con)
+              console.log(con)
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var date = new Date(parseInt(key));
+                var year = date.getFullYear();
+                var month =date.getMonth();
+                var day = date.getDate();
+                var item ={}
+                item.time =year+'-'+month+'-'+day;
+                item.items = con[key]
+                list.push(item)
+
+              }
+
+
+            }
             return list
             break;
           case 3:
-            list[0].items=this.whiteList
+            if(this.whiteList.length>0){
+
+              var con=_.groupBy(this.whiteList, function (item) {
+                return  item.create_time
+              })
+              var keys = Object.keys(con)
+              var item ={}
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var date = new Date(parseInt(key));
+                var year = date.getFullYear();
+                var month =date.getMonth();
+                var day = date.getDate();
+
+                item.time =year+'-'+month+'-'+day;
+                item.items = con[key]
+
+              }
+
+              list.push(item)
+
+            }
             return list
             break;
         }
@@ -128,7 +195,7 @@
       menus(){
         switch (this.menuID){
           case 1:
-            return this.actionSheetMenus.whitelistmenu
+            return this.actionSheetMenus.blacklistmenu
                 break;
           case 2:
             return this.actionSheetMenus.requestmenu
