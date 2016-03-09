@@ -1,19 +1,23 @@
 <template>
-  <nav-Bar :show.sync="showNavBar" :is-home="isHome"></nav-Bar>
-  <vueheader :title="title" @show-nav="showNav"></vueheader>
-  <div class="taps-container">
-    <tabs :tabs="tabs" @exchange-tab="exchangeTab"></tabs>
+  <div>
+    <nav-Bar :show.sync="showNavBar" :is-home="isHome"></nav-Bar>
+    <vueheader :title="title" @show-nav="showNav"></vueheader>
+    <div class="taps-container">
+      <tabs :tabs="tabs" @exchange-tab="exchangeTab"></tabs>
+    </div>
+    <div class="panel-containder">
+      <panel :groups="groups"
+             @more-action-show="showActionSheet1">
+      </panel>
+      <actionsheet
+        :show.sync="actionSheetShow"
+        :menus="menus"
+        :actions="actionSheetActions"
+      ></actionsheet>
+    </div>
+
   </div>
-  <div class="panel-containder">
-    <panel :groups="groups"
-           @more-action-show="showActionSheet1">
-    </panel>
-    <actionsheet
-      :show.sync="actionSheetShow"
-      :menus="menus"
-      :actions="actionSheetActions"
-    ></actionsheet>
-  </div>
+
 
 </template>
 
@@ -93,6 +97,8 @@
     },
     computed:{
       groups(){
+
+
         var list = [{
           time:'今天-2015年12月18日星期一',
           items:[]
@@ -100,12 +106,15 @@
         list[0].items=this.whiteList
         switch (this.menuID){
           case 1:
-            return []
+            list[0].items=this.blackList;
+            return list
             break;
           case 2:
-            return []
+            list[0].items=this.requestList
+            return list
             break;
           case 3:
+            list[0].items=this.whiteList
             return list
             break;
         }

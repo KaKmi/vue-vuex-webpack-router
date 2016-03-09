@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as actions from './action'
 import whitelist from './modules/whitelist'
+import manageModule from './modules/manageModule'
 import createLogger from 'vuex/logger'
 
 Vue.use(Vuex)
@@ -16,7 +17,8 @@ const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
   modules:{
-    whitelist
+    whitelist,
+    manageModule
   },
   strict: debug,
   middlewares: debug ? [createLogger()] : []

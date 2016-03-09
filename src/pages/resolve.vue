@@ -1,15 +1,19 @@
 <template>
-  <nav-Bar :show.sync="showNavBar" :is-resolve="isResolve"></nav-Bar>
-  <vueheader :title="title" @show-nav="showNav"></vueheader>
-  <div class="taps-container">
-    <tabs :tabs="tabs" @exchange-tab="exchangeTab"></tabs>
-  </div>
-  <div class="panel-containder">
-    <white-list :white-list="whiteGroup"
-                @del-white-item="delItem">
 
-    </white-list>
+  <div>
+    <nav-Bar :show.sync="showNavBar" :is-resolve="isResolve"></nav-Bar>
+    <vueheader :title="title" @show-nav="showNav"></vueheader>
+    <div class="taps-container">
+      <tabs :tabs="tabs" @exchange-tab="exchangeTab"></tabs>
+    </div>
+    <div class="panel-containder">
+      <white-list :white-list="whiteGroup"
+                  @del-white-item="delItem">
+
+      </white-list>
+    </div>
   </div>
+
 
 </template>
 
@@ -17,17 +21,18 @@
   import vueheader from '../components/header/index.vue'
   import {Actionsheet} from 'vue-weui';
   import tabs from '../components/Tabs/index'
-  import {getWhiteList} from '../vuex/action'
+  import {getManageWhite,delManageWhite} from '../vuex/action'
   import navBar from '../components/navbar/index'
   import whiteList from '../components/cells/whiteList.vue'
   export default {
 
     vuex: {
       actions: {
-        getWhiteList
+        getManageWhite,
+        delManageWhite
       },
       getters: {
-        whiteList:({whitelist})=> whitelist.wist
+        manageWhite:({manageModule})=> manageModule.manageWhite
       }
     },
     components: {vueheader, tabs,navBar,whiteList},
@@ -49,14 +54,14 @@
       delItem(e){
         if(e.target.dataset.id!=null && typeof e.target.dataset.id !=void 0){
 //          alert(e.target.dataset.id)
-
+          delManageWhite(e.target.dataset.id)
         }
       }
     },
 
     data(){
       return {
-        menuID:1,
+        menuID:4,
         isResolve:true,
         showNavBar:false,
         title: ' 内容过滤',
@@ -64,7 +69,7 @@
           {
             id: 1,
             title: '分类过滤',
-            active: true
+            active: false
           }, {
             id: 2,
             title: '搜索过滤',
@@ -76,18 +81,21 @@
           },{
             id: 4,
             title: '白名单',
-            active: false
+            active: true
           }],
 
       }
     },
     computed:{
       whiteGroup(){
-        return this.whiteList
+        return this.manageWhite
       }
     },
     route: {
       data(transition){
+        if(this.whiteGroup.length==0){
+          this.getManageWhite()
+        }
       }
     },
   }

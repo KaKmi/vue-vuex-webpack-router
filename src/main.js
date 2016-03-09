@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import routerConfig  from './route/routerCfg'
 import ajaxplugin from 'vue-resource'
 import App from './App.vue'
-
+var FastClick = require('fastclick');
+FastClick.attach(document.body);
 
 Vue.use(VueRouter);
 Vue.use(ajaxplugin);

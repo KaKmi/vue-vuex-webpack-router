@@ -9,6 +9,8 @@
     "test": "karma start build/karma.conf.js --single-run"
   },
   "dependencies": {
+    "fastclick": "^1.0.6",
+    "lodash": "^4.6.1",
     "vue": "^1.0.16",
     "vue-resource": "^0.7.0",
     "vue-router": "^0.7.11",
