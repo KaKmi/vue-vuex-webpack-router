@@ -11,6 +11,9 @@
                   @del-white-item="delItem">
 
       </white-list>
+      <collapse-list>
+
+      </collapse-list>
     </div>
   </div>
 
@@ -24,6 +27,8 @@
   import {getManageWhite,delManageWhite} from '../vuex/action'
   import navBar from '../components/navbar/index'
   import whiteList from '../components/cells/whiteList.vue'
+  import collapseList from '../components/collapseList/collapseList.vue'
+
   export default {
 
     vuex: {
@@ -35,7 +40,7 @@
         manageWhite:({manageModule})=> manageModule.manageWhite
       }
     },
-    components: {vueheader, tabs,navBar,whiteList},
+    components: {vueheader, tabs,navBar,whiteList,collapseList},
     methods: {
       showActionSheet1(){
         this.actionSheetShow=true
@@ -110,5 +115,6 @@
   .panel-containder {
     padding-top: 50px;
   }
+
 
 </style>

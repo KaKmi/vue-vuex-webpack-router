@@ -86,3 +86,20 @@ export const delManageWhite=({dispatch},id)=>{
     });
 }
 
+export const delRecordWhite=({dispatch},id)=>{
+  Vue.http.post(config.baseUrl+'/ptxms/browser/mywhitelistrecord/del', {token:'1',uid:'1',userRecordId:id}).then(
+    function (resp) {
+      //console.log(JSON.stringify(resp))
+      if(resp.data.http_status_code==200){
+        if(resp.data.isSuccess==true){
+          dispatch(types.DEL_WHITE_RECORD,id)
+        }else{
+          //todo add record
+        }
+      }else {
+
+      }
+    }, function (response) {
+
+    });
+}

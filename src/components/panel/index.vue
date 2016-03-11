@@ -1,6 +1,6 @@
 <template>
 
-  <div class="weui_panel weui_panel_access" v-for="group in groups">
+  <div class="weui_panel weui_panel_access"  v-for="group in groups">
     <div class="weui_panel_hd">{{group.time}}</div>
     <div class="weui_panel_bd">
       <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg" v-for="item in group.items">
@@ -9,15 +9,10 @@
         <!--</div>-->
         <div class="weui_media_bd">
           <h4 class="weui_media_title">{{item.name}}</h4>
-
-          <!--<h1 v-if="item.reason"><p class="weui_media_desc">{{item.url_address}}</h1>-->
-          <!--<h1 v-else>No</h1>-->
-          <p class="weui_media_desc" v-if="typeof item.reason !='undefined'">{{item.reason}}
-              <!--<span v-show="item.reason!='undefined'">{{tem.reason}}</span>-->
-          </p>
+          <p class="weui_media_desc" v-if="typeof item.reason !='undefined'">{{item.reason}}</p>
           <p class="weui_media_desc" v-else>{{item.url_address}}</p>
         </div>
-        <span class="more-control" @click="handleClick(item.address_filtering_id)"><i class="fa fa-ellipsis-h more-control-btn"></i></span>
+        <span class="more-control" @click="handleClick(item.user_record_id)"><i class="fa fa-ellipsis-h more-control-btn"></i></span>
       </a>
 
     </div>

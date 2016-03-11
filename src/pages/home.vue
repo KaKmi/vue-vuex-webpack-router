@@ -13,6 +13,7 @@
         :show.sync="actionSheetShow"
         :menus="menus"
         :actions="actionSheetActions"
+        @weui-menu-click="menuClick"
       ></actionsheet>
     </div>
 
@@ -26,8 +27,9 @@
   import {Actionsheet} from 'vue-weui';
   import tabs from '../components/Tabs/index'
   import panel from '../components/panel/index'
-  import {getWhiteList,getBlackList,getRequestList} from '../vuex/action'
+  import {getWhiteList,getBlackList,getRequestList,delRecordWhite} from '../vuex/action'
   import navBar from '../components/navbar/index'
+  import {commonWhite,commonBlack,commonRequest} from '../vuex/getters'
   import _ from 'lodash'
   export default {
     vuex: {
@@ -35,17 +37,20 @@
         getWhiteList,
         getBlackList,
         getRequestList,
+        delRecordWhite
       },
       getters: {
-        whiteList:({whitelist})=> whitelist.wist,
-        blackList:({whitelist})=> whitelist.blackList,
-        requestList:({whitelist})=> whitelist.requestList,
+        whiteList:commonWhite,
+        blackList:commonBlack,
+        requestList:commonRequest,
       }
     },
     components: {vueheader, tabs, panel,Actionsheet,navBar},
     methods: {
-      showActionSheet1(){
+      showActionSheet1(payload){
+
         this.actionSheetShow=true
+        this.todoId =payload;
       },
       showNav(){
         this.showNavBar = !this.showNavBar;
@@ -58,10 +63,37 @@
           tab.active = tab.id == menuID;
 
         });
+      },
+      menuClick(key){
+        var $ = this;
+        switch (key){
+          case 'remove_white':
+            //todo add event_log
+            console.log('menu_click'+key);
+//            $.delRecordWhite($.todoId)
+            break;
+          case 'del_white':
+            console.log('menu_click_'+key);
+            $.delRecordWhite($.todoId)
+            break;
+          case 'arrow_request':
+            console.log('menu_click'+key);
+            break;
+          case 'del_request':
+            console.log('menu_click'+key);
+            break;
+          case 'remove_blick':
+            console.log('menu_click'+key);
+            break;
+          case 'del_black':
+            console.log('menu_click'+key);
+            break;
+        }
       }
     },
     data(){
       return {
+        todoId:0,
         menuID:1,
         isHome:true,
         showNavBar:false,
@@ -83,17 +115,17 @@
         actionSheetShow: false,
         actionSheetMenus: {
           whitelistmenu: {
-            remove: '移除白名单',
-            del: '删除记录'
+            remove_white: '移除白名单',
+            del_white: '删除记录'
           },
 
           requestmenu: {
-            arrow: '解除屏蔽',
-            del: '删除记录'
+            arrow_request: '解除屏蔽',
+            del_request: '删除记录'
           },
           blacklistmenu:{
-            remove:'解除屏蔽',
-            del:'删除记录'
+            remove_blick:'解除屏蔽',
+            del_black:'删除记录'
           }
         },
         actionSheetActions: {
@@ -103,94 +135,19 @@
     },
     computed:{
       groups(){
-        var list = []
 
 
         switch (this.menuID){
           case 1:
-            if(this.blackList.length>0){
-
-              var con=_.groupBy(this.blackList, function (item) {
-                return  item.create_time
-              })
-              var keys = Object.keys(con)
-              var item ={}
-              for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                var date = new Date(parseInt(key));
-                var year = date.getFullYear();
-                var month =date.getMonth();
-                var day = date.getDate();
-
-                item.time =year+'-'+month+'-'+day;
-                item.items = con[key]
-
-              }
-
-              list.push(item)
-
-            }
-
-            return list
+            return this.blackList
             break;
           case 2:
-//            list[0].items=this.requestList
-            if(this.requestList.length>0){
-
-              var con=_.groupBy(this.requestList, function (item) {
-                return  item.create_time
-              })
-              var keys = Object.keys(con)
-              console.log(con)
-              for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                var date = new Date(parseInt(key));
-                var year = date.getFullYear();
-                var month =date.getMonth();
-                var day = date.getDate();
-                var item ={}
-                item.time =year+'-'+month+'-'+day;
-                item.items = con[key]
-                list.push(item)
-
-              }
-
-
-            }
-            return list
+            return this.requestList
             break;
           case 3:
-            if(this.whiteList.length>0){
-
-              var con=_.groupBy(this.whiteList, function (item) {
-                return  item.create_time
-              })
-              var keys = Object.keys(con)
-              var item ={}
-              for (var i = 0; i < keys.length; i++) {
-                var key = keys[i];
-                var date = new Date(parseInt(key));
-                var year = date.getFullYear();
-                var month =date.getMonth();
-                var day = date.getDate();
-
-                item.time =year+'-'+month+'-'+day;
-                item.items = con[key]
-
-              }
-
-              list.push(item)
-
-            }
-            return list
+            return this.whiteList
             break;
         }
-//        var list = [{
-//          time:'今天-2015年12月18日星期一',
-//          items:[]
-//        }]
-//        list[0].items.push(this.whiteList)
-//        return list;
       },
       menus(){
         switch (this.menuID){
@@ -208,6 +165,7 @@
     },
     route: {
       data(transition){
+        //todo add loading and promise an so on
         this.getWhiteList();
         this.getBlackList();
         this.getRequestList();
